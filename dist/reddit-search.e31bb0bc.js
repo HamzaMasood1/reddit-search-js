@@ -165,14 +165,15 @@ searchForm.addEventListener('submit', function (e) {
   } //clear input
 
 
-  searchInput.value = ''; //search reddit
+  searchInput.value = ''; // Search Reddit
 
   _redditapi.default.search(searchTerm, searchLimit, sortBy).then(function (results) {
+    var output = '<div class="card-columns">';
     console.log(results);
-    var output = '<div class="card-columns>'; //loop through posts
-
     results.forEach(function (post) {
-      output += "\n                <div class=\" card\" style=\"width: 18rem;\">\n                <img class=\"card-img-top\" src=\"...\" alt=\"Card image cap\">\n                <div class=\"card-body\">\n                <h5 class=\"card-title\">".concat(post.title, " </h5>\n                <p class=\"card-text\">").concat(post.selftext, "</p>\n                <a href=\"#\" class=\"btn btn-primary\">Go somewhere</a>\n                </div>\n                </div>\n                ");
+      // Check for image
+      var image = post.preview ? post.preview.images[0].source.url : 'https://cdn.comparitech.com/wp-content/uploads/2017/08/reddit-1.jpg';
+      output += "\n      <div class=\"card mb-2\">\n      <img class=\"card-img-top\" src=\"".concat(image, "\" alt=\"Card image cap\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">").concat(post.title, "</h5>\n        <p class=\"card-text\">").concat(truncateText(post.selftext, 100), "</p>\n        <a href=\"").concat(post.url, "\" target=\"_blank\n        \" class=\"btn btn-primary\">Read More</a>\n        <hr>\n        <span class=\"badge badge-secondary\">Subreddit: ").concat(post.subreddit, "</span> \n        <span class=\"badge badge-dark\">Score: ").concat(post.score, "</span>\n      </div>\n    </div>\n      ");
     });
     output += '</div>';
     document.getElementById('results').innerHTML = output;
@@ -198,6 +199,13 @@ function showMessage(message, className) {
   setTimeout(function () {
     return document.querySelector('.alert').remove();
   }, 3000);
+} //truncate text
+
+
+function truncateText(text, limit) {
+  var shortened = text.indexOf(' ', limit);
+  if (shortened == -1) return text;
+  return text.substring(0, shortened);
 }
 },{"./redditapi":"redditapi.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -227,7 +235,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54498" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57286" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
