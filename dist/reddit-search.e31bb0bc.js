@@ -125,8 +125,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _default = {
-  search: function search() {
-    console.log('search...');
+  search: function search(searchTerm, searchLimit, sortBy) {
+    return fetch("http://www.reddit.com/search.json?q=".concat(searchTerm, "&sort=").concat(sortBy, "&limit=").concat(searchLimit)).then(function (res) {
+      return res.json();
+    }).then(function (data) {
+      return data.data.children.map(function (data) {
+        return data.data;
+      });
+    }).catch(function (err) {
+      return console.log(err);
+    });
   }
 };
 exports.default = _default;
@@ -159,7 +167,9 @@ searchForm.addEventListener('submit', function (e) {
 
   searchInput.value = ''; //search reddit
 
-  _redditapi.default.search(searchTerm, searchLimit, sortBy);
+  _redditapi.default.search(searchTerm, searchLimit, sortBy).then(function (results) {
+    console.log(results);
+  });
 
   e.preventDefault();
 }); //show message
