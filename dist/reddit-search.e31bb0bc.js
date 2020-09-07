@@ -169,6 +169,13 @@ searchForm.addEventListener('submit', function (e) {
 
   _redditapi.default.search(searchTerm, searchLimit, sortBy).then(function (results) {
     console.log(results);
+    var output = '<div class="card-columns>'; //loop through posts
+
+    results.forEach(function (post) {
+      output += "\n                <div class=\" card\" style=\"width: 18rem;\">\n                <img class=\"card-img-top\" src=\"...\" alt=\"Card image cap\">\n                <div class=\"card-body\">\n                <h5 class=\"card-title\">".concat(post.title, " </h5>\n                <p class=\"card-text\">").concat(post.selftext, "</p>\n                <a href=\"#\" class=\"btn btn-primary\">Go somewhere</a>\n                </div>\n                </div>\n                ");
+    });
+    output += '</div>';
+    document.getElementById('results').innerHTML = output;
   });
 
   e.preventDefault();
